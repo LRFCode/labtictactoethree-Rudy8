@@ -55,6 +55,14 @@ public class Main
         //Print out the board right before play starts so the players can see the blank board
         printBoard(ticTacToeBoard);
 
+        System.out.println(" Player X Enter name");
+        String playerNameX  = getUserInput();
+        System.out.println("Player X is " + playerNameX);
+
+        System.out.println(" Player O Enter name");
+        String playerNameO  = getUserInput();
+        System.out.println("Player O is " + playerNameO);
+
         //There will always be at least one move so a do...while loop can be used
         //This loop, the code between the bracket after the do and before the bracket before the while,
         //is repeated until the gameOver function returns with the value 'true'
@@ -62,6 +70,14 @@ public class Main
         {
             //Tell the players what move number this is
             System.out.println("Move #:" + moveNumber);
+
+            if (symbol.equals ("X"))
+            {
+                System.out.println(playerNameX + " Its ya move!");
+            }else
+                {
+                    System.out.println(playerNameO + " its your move");
+                }
 
             //Get move from the keyboard
             String input = getUserInput();
@@ -99,9 +115,12 @@ public class Main
             gameOver = true;
         }
         //If there are three of the same symbol in a row the game is over
-        else if (threeInARow(ticTacToeBoard))
+        else if (threeInARow(ticTacToeBoard, "X"))
         {
             gameOver = true;
+        }else if (threeInARow(ticTacToeBoard, "O"))
+        {
+         gameOver = true;
         }
 
         return gameOver;
@@ -112,8 +131,10 @@ public class Main
     {
         boolean openSpaces = false;
 
+        //Loop through each row
         for (int row = 0; row < 3; row++)
         {
+            //For the row we are on loop through the columns
             for (int column = 0; column < 3; column++)
             {
                 if (ticTacToeBoard[column][row].equals(" "))
@@ -127,20 +148,21 @@ public class Main
     }
 
     //Detects three in a row for player 'X'
-    private static boolean threeInARow(String[][] ticTacToeBoard)
+    private static boolean threeInARow(String[][] ticTacToeBoard, String symbol)
     {
         boolean threeInARow = false;
 
         //Loop through each row in the board
         for (int row = 0; row < 3; row++)
         {
-            if (threeInARow(ticTacToeBoard, row, "X"))
+            if (threeInARow(ticTacToeBoard, row, symbol))
             {
                 threeInARow =  true;
             }
         }
 
         return threeInARow;
+
     }
 
     private static boolean threeInARow(String[][] ticTacToeBoard, int row, String symbol)
