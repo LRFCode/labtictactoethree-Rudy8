@@ -56,11 +56,11 @@ public class Main
         printBoard(ticTacToeBoard);
 
         System.out.println(" Player X Enter name");
-        String playerNameX  = getUserInput();
+        String playerNameX = getUserInput();
         System.out.println("Player X is " + playerNameX);
 
         System.out.println(" Player O Enter name");
-        String playerNameO  = getUserInput();
+        String playerNameO = getUserInput();
         System.out.println("Player O is " + playerNameO);
 
         //There will always be at least one move so a do...while loop can be used
@@ -71,13 +71,13 @@ public class Main
             //Tell the players what move number this is
             System.out.println("Move #:" + moveNumber);
 
-            if (symbol.equals ("X"))
+            if (symbol.equals("X"))
             {
                 System.out.println(playerNameX + " Its ya move!");
-            }else
-                {
-                    System.out.println(playerNameO + " its your move");
-                }
+            } else
+            {
+                System.out.println(playerNameO + " its your move");
+            }
 
             //Get move from the keyboard
             String input = getUserInput();
@@ -92,8 +92,7 @@ public class Main
             if (symbol.equals("X"))
             {
                 symbol = "O";
-            }
-            else
+            } else
             {
                 symbol = "X";
             }
@@ -118,10 +117,21 @@ public class Main
         else if (threeInARow(ticTacToeBoard, "X"))
         {
             gameOver = true;
-        }else if (threeInARow(ticTacToeBoard, "O"))
-        {
-         gameOver = true;
         }
+        else if (threeInARow(ticTacToeBoard, "O"))
+        {
+            gameOver = true;
+        }
+        else if (threeInAColumn(ticTacToeBoard, "X"))
+        {
+            gameOver = true;
+        }
+        else if (threeInAColumn(ticTacToeBoard, "O"))
+        {
+            gameOver = true;
+        }
+
+
 
         return gameOver;
     }
@@ -157,12 +167,57 @@ public class Main
         {
             if (threeInARow(ticTacToeBoard, row, symbol))
             {
-                threeInARow =  true;
+                threeInARow = true;
             }
         }
 
         return threeInARow;
 
+    }
+
+    //Detects three in a row for player 'X'
+    private static boolean threeInAColumn(String[][] ticTacToeBoard, String symbol)
+    {
+        boolean threeInAColumn = false;
+
+        //Loop through each row in the board
+        for (int column = 0; column < 3; column++)
+        {
+            if (threeInAColumn(ticTacToeBoard, column, symbol))
+            {
+                threeInAColumn = true;
+            }
+        }
+
+        return threeInAColumn;
+
+    }
+
+    private static boolean threeInAColumn(String[][] ticTacToeBoard, int column, String symbol)
+    {
+        boolean threeInAColumn = false;
+        int count = 0;
+
+        //Loop through the columns in a row
+        for (int row = 0; row < 3; row++)
+        {
+            //Check to see if the symbol in the position specified by row and column
+            //matches the symbol passed into this function
+            if (ticTacToeBoard[row][column].equals(symbol))
+            {
+                //If we got here we matched so increment the counter
+                count++;
+
+                //Check to see if we have counted 3 of the passed in symbol
+                if (count == 3)
+                {
+                    //If we got here then it means we saw three of the passed in symbol in a row
+                    threeInAColumn = true;
+                }
+            }
+        }
+
+        return threeInAColumn;
     }
 
     private static boolean threeInARow(String[][] ticTacToeBoard, int row, String symbol)
@@ -229,8 +284,7 @@ public class Main
             //If we got here we did not find anyything wrong with the input
             //so we will fill out the position specified by row and column with the symbol that was passed in
             ticTacToeBoard[row][column] = symbol;
-        }
-        else
+        } else
         {
             //If we got here something invalid we entered so the turn is forfeited
             System.out.println("Invalid number. No soup for you! Forfeit your turn.");
@@ -277,7 +331,7 @@ public class Main
         //Loop through each column in the specified row
         for (int column = 0; column < 3; column++)
         {
-            System.out.print( ticTacToeBoard[row][column]);
+            System.out.print(ticTacToeBoard[row][column]);
             if (column < 2)
             {
                 System.out.print("|");
