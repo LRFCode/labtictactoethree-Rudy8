@@ -1,6 +1,10 @@
 package com.company;
 
+import com.sun.prism.paint.Color;
+
 import java.util.Scanner;
+
+import static com.sun.prism.paint.Color.RED;
 
 //Goals
 //Type in code to start getting comfortable keying in and looking at Java and using an IDE
@@ -55,6 +59,9 @@ public class Main
         //Print out the board right before play starts so the players can see the blank board
         printBoard(ticTacToeBoard);
 
+
+
+
         System.out.println(" Player X Enter name");
         String playerNameX = getUserInput();
         System.out.println("Player X is " + playerNameX);
@@ -83,28 +90,32 @@ public class Main
             String input = getUserInput();
 
             //Attempt to perform the move entered on the keyboard
-            placeSymbol(ticTacToeBoard, input, symbol);
+            boolean moveWasMade = placeSymbol(ticTacToeBoard, input, symbol);
 
+            if (moveWasMade)
+            {
+                if (symbol.equals("X"))
+                {
+                    symbol = "O";
+                } else
+                {
+                    symbol = "X";
+                }
+            }
             //Increment the move number
             moveNumber++;
 
             //Toggle back and forth between X and O on each move by always changing to the symbol that was not the last one
-            if (symbol.equals("X"))
-            {
-                symbol = "O";
-            } else
-            {
-                symbol = "X";
-            }
+
 
             //Print out the board
             printBoard(ticTacToeBoard);
         }
-        while (!gameOver(ticTacToeBoard));
+        while (!gameOver(ticTacToeBoard,  playerNameX, playerNameO));
     }
 
     //Detects whether or not the game is over
-    private static boolean gameOver(String[][] ticTacToeBoard)
+    private static boolean gameOver(String[][] ticTacToeBoard, String playerNameX, String playerNameO)
     {
         boolean gameOver = false;
 
@@ -112,24 +123,40 @@ public class Main
         if (!openSpaces(ticTacToeBoard))
         {
             gameOver = true;
+            System.out.println("lets play again, its a draw");
         }
         //If there are three of the same symbol in a row the game is over
         else if (threeInARow(ticTacToeBoard, "X"))
         {
             gameOver = true;
+            System.out.printf("yea baby yea!" +  playerNameX + " you win!");
         }
         else if (threeInARow(ticTacToeBoard, "O"))
         {
             gameOver = true;
+            System.out.println( "you win!" + playerNameO + " yea  yea!");
         }
         else if (threeInAColumn(ticTacToeBoard, "X"))
         {
             gameOver = true;
+            System.out.println(playerNameX+ " baby yea!" + " you win!" );
         }
         else if (threeInAColumn(ticTacToeBoard, "O"))
         {
             gameOver = true;
+            System.out.println("you win! " + playerNameO + " O you devil!");
         }
+        else if (threeInADiag(ticTacToeBoard))
+        {
+            gameOver = true;
+            System.out.println("diag wins");
+        }
+        else if (threeInADiag(ticTacToeBoard))
+        {
+            gameOver = true;
+            System.out.println("diag also wins");
+        }
+
 
 
 
@@ -247,7 +274,37 @@ public class Main
         return threeInARow;
     }
 
-    private static void placeSymbol(String[][] ticTacToeBoard, String input, String symbol)
+    public static boolean threeInADiag(String[][] ticTacToeBoard)
+    {
+        boolean threeInADiag = false;
+        if (ticTacToeBoard[0][0].equals("X") && ticTacToeBoard [1][1].equals("X") && ticTacToeBoard [2][2].equals("X"))
+        {
+            threeInADiag = true;
+        System.out.println("oh brother");
+        }
+
+        else if (ticTacToeBoard[2][0].equals("X") && ticTacToeBoard [1][1].equals("X") && ticTacToeBoard [0][2].equals("X"))
+        {
+            threeInADiag = true;
+            System.out.println("oh brother, its diagonal");
+        }
+
+        if (ticTacToeBoard[0][0].equals("O") && ticTacToeBoard [1][1].equals("O") && ticTacToeBoard [2][2].equals("O"))
+        {
+            threeInADiag = true;
+            System.out.println("oh brother its criss cross");
+        }
+        else if (ticTacToeBoard[2][0].equals("O") && ticTacToeBoard [1][1].equals("O") && ticTacToeBoard [0][2].equals("O"))
+        {
+            threeInADiag = true;
+            System.out.println("oh brother diagonal gold");
+        }
+
+        return threeInADiag;
+
+    }
+
+    private static boolean placeSymbol(String[][] ticTacToeBoard, String input, String symbol)
     {
         //Take the String named 'input' and split in into an array of Strings using a comma to know where to split it up
         String[] position = input.split(",");
@@ -287,8 +344,10 @@ public class Main
         } else
         {
             //If we got here something invalid we entered so the turn is forfeited
-            System.out.println("Invalid number. No soup for you! Forfeit your turn.");
+            System.out.println("Invalid number. Try again.");
+
         }
+        return inputValid;
     }
 
     //Set each place in the ticTacToeBoard array to a blank space
